@@ -128,4 +128,24 @@ if you're unsure which of type of integer to use, Rust's defaults are generally 
 > Saturated value: 255
 > ```
 
+## Floating-Point Types
 
+Rust has two primitive types for floating-point numbers, which are numbers that include a fractional component (i.e., numbers with decimal points). These types are `f32` and `f64`, corresponding to 32-bit and 64-bit floating-point numbers, respectively.
+
+- `f32` (32-bit float): Single-precision floating-point number.
+- `f64` (64-bit float): Double-precision floating-point number. This is the default floating-point type in Rust.
+  - On modern CPUs, `f64` performs nearly as fast as `f32` but provides higher precision. Therefore, Rust defaults to `f64` for floating-point numbers.
+
+Here’s an example that shows floating-point numbers in action:
+
+```rust
+fn main() {
+    let x = 2.0;   // f64 by default
+    let y: f32 = 3.0; // explicitly typed as f32
+}
+```
+
+**Use Cases:**
+
+- Use `f64` when you need precision and are not restricted by memory.
+- Use `f32` when you need to save memory and can tolerate lower precision.
