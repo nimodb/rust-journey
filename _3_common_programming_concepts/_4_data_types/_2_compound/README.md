@@ -145,7 +145,7 @@ In languages without strict bounds checking, accessing an array out of the bound
 
 > Rust’s safety mechanisms, like array bounds checking, ensure that your programs are less prone to bugs related to invalid memory access. By catching these errors early, Rust helps you write more reliable and secure code.
 
-#### Question 1:
+## Question 1:
 
 ```rust
 fn main() {
@@ -159,7 +159,7 @@ fn main() {
 **Analysis:**
 This program will not pass the compiler because arrays in Rust must contain elements of a single type. The code attempts to mix a string (`message`) with a number (`100`), which is not allowed. The compiler will raise an error indicating a type mismatch.
 
-#### Question 2:
+## Question 2:
 
 ```rust
 fn main() {
