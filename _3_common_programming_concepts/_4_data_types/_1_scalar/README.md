@@ -178,3 +178,54 @@ fn main() {
 >
 > - **Integer Division:** When both operands are integers. division results in an integer, with any fractional part truncated toward zero. For example, `-5 / 3` results in `-1`.
 > - **Floating-Point Division:** When using floating-point numbers, division returns a floating-point result
+
+## Boolean Type
+
+Rust, like most programming languages, include a Boolean type for representing truth values. In Rust, the Boolean type is represented by `bool` and has exactly two possible values: `true` and `false`.
+
+```rust
+fn main() {
+let t = true;
+let f: bool = false; // with explicit type annotation
+}
+```
+
+It occupies one byte of memory and can be used with or without an explicit type annotation, as Rust can infer the type from the value.
+
+The main way to use Boolean values is through conditionals, such as an if expression.
+
+```rust
+fn main() {
+    let is_raining = true;
+
+    if is_raining {
+        println!("Don't forget your Babe <3")
+    } else {
+        println!("Enjoy the sunshine!")
+    }
+}
+```
+
+In this example, the value if `is_raining` determines which message is printed. This demonstrates how Boolean values are typically utilized to influence the flow of program execution based on conditions.
+
+## The Character Type
+
+In Rust, the `char` type is the most basic type for representing alphabetic characters. Unlike string literals, which use double quotes, `char` literals are enclosed in single quotes.
+
+```rust
+fn main() {
+    let letter: char = 'z'; // English letter
+    let mathematical_symbol: char = 'ℤ'; // Mathematical symbol
+    let persian_letter: char = 'س'; // Persian letter
+    let emoji: char = '🦀';
+
+    println!("English letter: {}", letter);
+    println!("Mathematical symbol: {}", mathematical_symbol);
+    println!("Persian letter: {}", persian_letter);
+    println!("Rust emoji: {}", emoji);
+}
+```
+
+The `char` type is four bytes in size and represents a Unicode Scalar Value, allowing it to encompass a wide range of characters from various languages (such as Persian, Chinese, Japanese, and Korean), emojis, and zero-width spaces. The valid range for Unicode Scalar Values is from `U+000` to `U+D7FF` and `U+E000` to `U+10FFF`.
+
+> It's important to note that the concept of a "character" in Unicode might not always align with the typical human understanding of a character.
