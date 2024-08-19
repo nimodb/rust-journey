@@ -149,3 +149,32 @@ fn main() {
 
 - Use `f64` when you need precision and are not restricted by memory.
 - Use `f32` when you need to save memory and can tolerate lower precision.
+
+## Numeric Operations
+
+Rust provides support for the basic mathematical operations that you would expect to use with all number types. These operations include addition, subtraction, multiplication, division, and remainder (modules). Each of these operations works as expected, with integer division truncation toward zero.
+
+```rust
+fn main() {
+    // addition
+    let sum = 5 + 10;
+
+    // subtraction
+    let difference = 95.5 - 4.3;
+
+    // multiplication
+    let product = 4 * 30;
+
+    // division
+    let quotient = 56.7 / 32.2;
+    let truncated = -5 / 3; // Results in -1, integer division truncates towards zero
+
+    // remainder
+    let remainder = 43 % 5;
+}
+```
+
+> \*\* Notes on Division
+>
+> - **Integer Division:** When both operands are integers. division results in an integer, with any fractional part truncated toward zero. For example, `-5 / 3` results in `-1`.
+> - **Floating-Point Division:** When using floating-point numbers, division returns a floating-point result
