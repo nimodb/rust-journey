@@ -1,4 +1,4 @@
-# 3.2 Constants
+# 3.2. Constants
 
 In Rust, constants are similar to immutable variables, but there are important differences. Constants are values that are bound to a name and cannot be changed after being a declared. They are always immutable and are declared using the `const` keyword. Unlike variables declared with `let`, constants must have their type explicitly annotated.
 

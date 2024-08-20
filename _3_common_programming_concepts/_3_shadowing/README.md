@@ -1,4 +1,4 @@
-# 3.3 Shadowing
+# 3.3. Shadowing
 
 In Rust, shadowing allow you to declared a new variable with the same name as a previous one within the same scope. This new variable overshadows the previous one, meaning the compiler will use the value of the new variable whenever the name is referenced. Once the scope of the new variable ends, the original variable becomes accessible again.
 

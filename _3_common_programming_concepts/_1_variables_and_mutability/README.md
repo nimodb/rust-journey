@@ -1,4 +1,4 @@
-# 3.1 Variables and Mutability
+# 3.1. Variables and Mutability
 
 This section cover the concept of the variables and mutability, using a simple example to demonstrate how Rust enforces immutability by default and how you can opt into mutability when you needed.
 

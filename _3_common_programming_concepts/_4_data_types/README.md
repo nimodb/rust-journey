@@ -1,4 +1,4 @@
-# 4. Data Types
+# 3.4. Data Types
 
 In Rust, Every value is of a certain data type, which defines how the compiler interprets and manages that value. This is crucial because Rust is a _statically_ typed language, meaning the types of all variables must be known at compile time. Understanding data types helps you write more predictable and error-free code.
 
