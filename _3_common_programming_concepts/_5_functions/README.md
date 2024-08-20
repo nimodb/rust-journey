@@ -256,7 +256,6 @@ fn main() {
     let x = plus_one(5);
 
     println!("The value of x is: {x}");
-
 }
 
 fn plus_one(x: i32) -> i32 {
@@ -269,7 +268,7 @@ fn plus_one(x: i32) -> i32 {
 - **Using the Return Value:** In `main`, `plus_one(5)` returns `6`, which is then printed.
 
 > **Key Points to Remember:**
-
+>
 > - **Return Type:** You must declare the return type of a function after the `->` symbol in the function signature.
 > - **Implicit Return:** If the last expression in a function’s body is not followed by a semicolon, it is returned automatically.
 > - **Using `return`:** You can use the `return` keyword to return a value early from a function, but it’s not required at the end.
