@@ -122,7 +122,7 @@ The measurement is: 5h
 >
 > By adding the type annotation `i32` to the parameter `x`, the function will now compile and run correctly printing `0` as expected. Rust's requirement for explicit type annotations helps catch errors early in the development process, ensuring safer and more predictable code.
 
-### Statements and Expressions
+## Statements and Expressions
 
 Function bodies are made up of a series of statements optionally ending in an expression. So far, the functions we’ve covered haven’t included an ending expression, but you have seen an expression as part of a statement. Because Rust is an expression-based language, this is an important distinction to understand. Other languages don’t have the same distinctions, so let’s look at what statements and expressions are and how their differences affect the bodies of functions.
 
@@ -216,3 +216,107 @@ Here's what's happening:
 - This value (`4`) is then assigned to `y`.
 
 **Key Point:** Notice that the line `x + 1` inside the block doesn't end with a semicolon (`;`). That's because, in Rust, if you add a semicolon at the end of an expression, it turns the expression into a statement, which **no longer returns a value**.
+
+## Functions with Return Values
+
+In Rust, functions can return values, allowing you to pass data from the function back to the calling code. When a function returns a value, you must specify the return type after an arrow (`->`) in the function signature. The return value of the function is typically the result of the final expression in the function’s body. Unlike some other languages, Rust does not require you to use the `return` keyword to return a value at the end of a function—although you can use `return` to return early.
+
+Here's an example of a simple function that returns a value:
+
+```rust
+fn five() -> i32 {
+    5
+}
+
+fn main() {
+    let x = five();
+
+    println!("The value of x is: {x}");
+}
+```
+
+- **Function Signature:** The function `five` is declared to return an `i32` type value, which is indicated by the `-> i32` in its signature.
+- **Function Body:** The body of `five` consists only of the number `5`. Since there is **no semicolon** after the `5`, it’s treated as an expression, and its value is returned automatically.
+- **Using the Return Value:** In `main`, the return value of `five()` is assigned to the variable `x`. Since `five` returns `5`, this is equivalent to `let x = 5;`.
+
+When you run this code, you'll see the following output:
+
+```bash
+$ cargo run
+
+The value of x is: 5
+```
+
+### Returning Values from Functions
+
+Here's another example where a function takes a parameter and returns a value:
+
+```rust
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+```
+
+- **Function Signature:** `plus_one` takes an `i32` argument and returns an `i32`. The return type is specified with `-> i32`.
+- **Function Body:** The function returns the value of `x + 1`. Since the `x + 1` expression is the last expression and lacks a semicolon, its value is returned by the function.
+- **Using the Return Value:** In `main`, `plus_one(5)` returns `6`, which is then printed.
+
+> **Key Points to Remember:**
+
+> - **Return Type:** You must declare the return type of a function after the `->` symbol in the function signature.
+> - **Implicit Return:** If the last expression in a function’s body is not followed by a semicolon, it is returned automatically.
+> - **Using `return`:** You can use the `return` keyword to return a value early from a function, but it’s not required at the end.
+
+## Questions
+
+### Question 1
+
+In Rust, a curly-brace block like `{ /_ ... _/ }` is:
+
+1. An expression
+2. A statement
+3. A syntactic scope
+
+**Answer**:
+
+**1. An expression** and **3. A syntactic scope**
+
+A block in Rust is an expression because it evaluates to a value, which is typically the value of the last expression inside it. Additionally, a block defines a syntactic scope for any variables declared with let inside it, meaning those variables are only accessible within that block.
+
+### Question 2
+
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.
+
+```rust
+fn f(x: i32) -> i32 {
+    x + 1
+}
+
+fn main() {
+    println!(
+        "{}",
+        f({
+            let y = 1;
+            y + 1
+        })
+    );
+}
+```
+
+**Answer:**
+Yes, the program will pass the compiler.
+
+- The block `{ let y = 1; y + 1 }` inside `f` is an expression that evaluates to `2`.
+- The value `2` is then passed as an argument to the function `f`, which returns `3` `(2 + 1)`.
+- The output of the program will be:
+
+```bash
+3
+```
