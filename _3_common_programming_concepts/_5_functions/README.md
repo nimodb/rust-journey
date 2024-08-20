@@ -31,11 +31,93 @@ When you run the above program, it executes the `main` function, which first pri
 
 ```bash
 $ cargo run
-    Compiling functions v0.1.0 (file:///projects/functions)
-     Finished dev [unoptimized + debuginfo] target(s) in 0.28s
-      Running `target/debug/functions`
+
 Hello, world!
 Another function.
 ```
 
 This example illustrates how functions can be defined and used to organize and modularize your code. Whether you define a function before or after the `main` function doesn’t matter as long as it’s in the same scope. Rust will compile and execute your code correctly. Functions are essential in managing complexity and reusing code efficiently in Rust programs.
+
+## Parameters
+
+Functions in Rust can take parameters, which are special variables that allow the function to operate on different inputs each time it’s called. When a function is defined with parameters, you provide specific values (arguments) when calling the function. Although "parameter" and "argument" are technically different, they are often used interchangeably.
+
+In this version of `another_function` we add a parameter:
+
+```rust
+fn main() {
+    print_value(5);
+}
+
+fn print_value(x: i32) {
+    println!("The value of x is: {x}");
+}
+```
+
+The function `print_value` is defined to take one parameter, `x`, of type `i32`. When calling `print_value(5);`, the argument `5` is passed to the function binding it to `x`.
+
+```bash
+$ cargo run
+
+The value of x is: 5
+```
+
+This output is produced because the value `5` replaces `{x}` in the `println!` macro.
+
+### Type Annotations for Parameters
+
+In Rust, every parameter in a function's signature must have an explicitly declared type. This design choice ensures that the compiler can infer types in other parts of the code and produce helpful error messages when necessary.
+
+**Functions with Multiple Parameters**
+
+You can define functions with multiple parameters, each with its own type, separated by commas:
+
+```rust
+fn main() {
+    print_labeled_measurement(5, 'h');
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The Measurement is: {value}{unit_label}");
+}
+```
+
+`print_labeled_measurement` takes two parameters: `value`of type `i32` `unit_label`of type `char`.
+
+Because we called the function with `5` as the value for `value` and `'h'` as the value for `unit_label`, the program output contains those values.
+
+```bash
+$ cargo run
+
+The measurement is: 5h
+```
+
+> #### Missing Type Annotations
+>
+> In Rust, forgetting to declare the type of a parameter in a function will result in a compile-time error. Let's examine a common mistake:
+>
+> ```rust
+> fn f(x) {
+>   println!("{x}");
+> }
+>
+> fn main() {
+>   f(0);
+> }
+> ```
+>
+> **Context:** This code fail to compile because the function `f` lacks a type annotation for the parameter `x`.
+
+> **Corrected Version:**
+>
+> ```rust
+> fn f(x: i32) {
+>   println!("{x}");
+> }
+>
+> fn main() {
+>   f(0);
+> }
+> ```
+>
+> By adding the type annotation `i32` to the parameter `x`, the function will now compile and run correctly printing `0` as expected. Rust's requirement for explicit type annotations helps catch errors early in the development process, ensuring safer and more predictable code.
