@@ -107,7 +107,7 @@ The measurement is: 5h
 > ```
 >
 > **Context:** This code fail to compile because the function `f` lacks a type annotation for the parameter `x`.
-
+>
 > **Corrected Version:**
 >
 > ```rust
@@ -121,3 +121,98 @@ The measurement is: 5h
 > ```
 >
 > By adding the type annotation `i32` to the parameter `x`, the function will now compile and run correctly printing `0` as expected. Rust's requirement for explicit type annotations helps catch errors early in the development process, ensuring safer and more predictable code.
+
+### Statements and Expressions
+
+Function bodies are made up of a series of statements optionally ending in an expression. So far, the functions we’ve covered haven’t included an ending expression, but you have seen an expression as part of a statement. Because Rust is an expression-based language, this is an important distinction to understand. Other languages don’t have the same distinctions, so let’s look at what statements and expressions are and how their differences affect the bodies of functions.
+
+**Statements**
+
+- Statements are instructions that perform some action and do not return a value.
+- For example, creating a variable with `let y = 6;` is a statement. It sets up a binding, but the statement itself doesn't produce a value.
+
+```rust
+fn main() {
+    let y = 6; // This is a statement
+}
+```
+
+In the above code, `let y = 6;` is a statement that assigns the value `6` to `y`. However, because it's a statement, is doesn't return a value, so you can't do something like this:
+
+```rust
+fn main() {
+    let x = (let y = 6); // This will cause an error
+}
+```
+
+If you try to run this code, Rust will produce an error because a `let` statement doesn't return a value and thus can't be assigned to `x`.
+
+When you run this program, the error you’ll get looks like this:
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+error: expected expression, found `let` statement
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^
+
+error: expected expression, found statement (`let`)
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^^^^^^^
+  |
+  = note: variable declaration using `let` is a statement
+
+error[E0658]: `let` expressions in this position are unstable
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^^^^^^^
+  |
+  = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+
+warning: unnecessary parentheses around assigned value
+ --> src/main.rs:2:13
+  |
+2 |     let x = (let y = 6);
+  |             ^         ^
+  |
+  = note: `#[warn(unused_parens)]` on by default
+help: remove these parentheses
+  |
+2 -     let x = (let y = 6);
+2 +     let x = let y = 6;
+  |
+
+For more information about this error, try `rustc --explain E0658`.
+warning: `functions` (bin "functions") generated 1 warning
+error: could not compile `functions` due to 3 previous errors; 1 warning emitted
+```
+
+**Expressions**
+
+- Expressions, on the other hand, evaluate to a value.
+- Most of the code you write is Rust will be expressions. For example, `5 + 6` is an expression that evaluates to `11`.
+- Function calls, macros, and block (enclosed in `{}`) are also expressions.
+
+```rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+```
+
+Here's what's happening:
+
+- The block `{ let x = 3; x + 1 }` is an expression.
+- The expression evaluates to `4` because the last line inside the block is `x + 1`, which equals `4` (since `x` is `3`).
+- This value (`4`) is then assigned to `y`.
+
+**Key Point:** Notice that the line `x + 1` inside the block doesn't end with a semicolon (`;`). That's because, in Rust, if you add a semicolon at the end of an expression, it turns the expression into a statement, which **no longer returns a value**.

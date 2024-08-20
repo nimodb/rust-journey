@@ -8,6 +8,13 @@ fn main() {
     print_labeled_measurement(5, 'h');
 
     f(0);
+
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
 }
 
 fn another_function() {
