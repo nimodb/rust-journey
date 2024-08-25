@@ -156,3 +156,113 @@ fn main() {
 ```
 
 **Answer:** No, it will not compile. The program will produce an error because the condition in the `if` expression (`x`) is not a boolean. Rust requires the condition to be a boolean value, and it does not allow "truthy" or "falsy" values like some other languages. The compiler will raise an error indicating that the condition must be a bool.
+
+### Repetition with Loops
+
+In Rust, loops are essential for executing a block of code multiple times. Rust provides three types of loops: `loop`, `while`, and `for`. Each serves different purposes depending on the situation.
+
+#### Repeating Code with `loop`
+
+The `loop` keyword in Rust creates an infinite loop, which continues to execute until you explicitly tell it to stop.
+
+```rust
+fn main() {
+    loop {
+        println!("again!");
+    }
+}
+```
+
+This code will print "again!" repeatedly until you manually stop the program, usually by pressing `ctrl-c` in the terminal.
+
+If you want to stop the loop programmatically, you can use the `break` keyword. For example:
+
+```rust
+fn main() {
+    let mut counter = 0;
+
+    loop {
+        counter += 1;
+        if counter == 5 {
+            break;
+        }
+        println!("Counter: {counter}");
+    }
+}
+```
+
+This loop will run until `counter` equals 5, at which point the `break` statement will exit the loop.
+
+> > Recall that we did this in the guessing game in the [“Quitting After a Correct Guess”](https://github.com/nimodb/rust-journey/tree/main/_2_guessing_game) section of Chapter 2 to exit the program when the user won the game by guessing the correct number.
+> >
+> > We also used `continue` in the guessing game, which in a loop tells the program to skip over any remaining code in this iteration of the loop and go to the next iteration.
+
+#### Returning Values from Loops
+
+Loops can also return values. By placing a value after the `break` keyword, you can exit the loop and pass that value back to the rest of the program.
+
+```rust
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+}
+```
+
+In this example, the loop increments `counter` until it reaches 10, then breaks out of the loop, returning `counter * 2`, which is 20. This value is then stored in `result` and printed.
+
+> > **Note:** The semicolon after `break counter * 2` is optional because `break` acts similarly to `return`, and the code after it won't be executed.
+
+#### Loop Labels to Disambiguate Between Multiple Loops
+
+When dealing with nested loops, `break` and `continue` affect only the innermost loop by default. To control which loop is affected, you can use loop labels. Labels are prefixed with a single quote (`) and are used to specify which loop should be controlled.
+
+```rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+
+In this example, the outer loop is labeled `'counting_up`. The `break 'counting_up;` statement exits the outer loop, even though it is inside an inner loop. The program will print:
+
+```rust
+$ cargo run
+
+count = 0
+remaining = 10
+remaining = 9
+count = 1
+remaining = 10
+remaining = 9
+count = 2
+remaining = 10
+End count = 2
+```
+
+This demonstrates how loop labels allow precise control over nested loops, making your code easier to manage and understand.
