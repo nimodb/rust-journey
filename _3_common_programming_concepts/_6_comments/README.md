@@ -68,7 +68,7 @@ By placing the comment on its own line, it’s clear that the comment is referri
 
 ## Documentation Comments
 
-Rust also supports a special type of comment for documentation purposes, known as documentation comments. We'll discuss documentation comments in detail later when we cover [Publishing a Crate to Crates.io]("https://github.com/nimodb/rust-journey/").
+Rust also supports a special type of comment for documentation purposes, known as documentation comments. We'll discuss documentation comments in detail later when we cover [Publishing a Crate to Crates.io](https://github.com/nimodb/rust-journey/).
 
 ---
 

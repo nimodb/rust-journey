@@ -7,6 +7,6 @@ fn main() {
     /* This is a block comment that spans multiple lines.
     It begins with /* and ends with */. Everything in
     between is ignored by the compiler. */
-    
+
     println!("Hello, world!");
 }
