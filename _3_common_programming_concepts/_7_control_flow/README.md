@@ -193,9 +193,9 @@ fn main() {
 
 This loop will run until `counter` equals 5, at which point the `break` statement will exit the loop.
 
-> > Recall that we did this in the guessing game in the [“Quitting After a Correct Guess”](https://github.com/nimodb/rust-journey/tree/main/_2_guessing_game) section of Chapter 2 to exit the program when the user won the game by guessing the correct number.
-> >
-> > We also used `continue` in the guessing game, which in a loop tells the program to skip over any remaining code in this iteration of the loop and go to the next iteration.
+> Recall that we did this in the guessing game in the [“Quitting After a Correct Guess”](https://github.com/nimodb/rust-journey/tree/main/_2_guessing_game) section of Chapter 2 to exit the program when the user won the game by guessing the correct number.
+>
+> We also used `continue` in the guessing game, which in a loop tells the program to skip over any remaining code in this iteration of the loop and go to the next iteration.
 
 #### Returning Values from Loops
 
@@ -219,7 +219,7 @@ fn main() {
 
 In this example, the loop increments `counter` until it reaches 10, then breaks out of the loop, returning `counter * 2`, which is 20. This value is then stored in `result` and printed.
 
-> > **Note:** The semicolon after `break counter * 2` is optional because `break` acts similarly to `return`, and the code after it won't be executed.
+> **Note:** The semicolon after `break counter * 2` is optional because `break` acts similarly to `return`, and the code after it won't be executed.
 
 #### Loop Labels to Disambiguate Between Multiple Loops
 
@@ -266,3 +266,196 @@ End count = 2
 ```
 
 This demonstrates how loop labels allow precise control over nested loops, making your code easier to manage and understand.
+
+### Conditional Loops with `while`
+
+In Rust, the `while` loops is used to run a block of code repeatedly as long as a specified condition remains true. This is particularly useful when you don't know beforehand how many times you need to iterate, but you have a condition that determines whether the loop should continue.
+
+**Example:** Countdown with a `while` loop
+Here's an example that demonstrates a countdown using a `while` loop:
+
+```rust
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+}
+```
+
+- **Initial Setup:** The variable `number` is initialized to `3`.
+- **Condition Check:** The `while` loop checks the condition `number != 0`. If this condition is true, the loop will execute the block of code inside it.
+- **Loop Body:** Inside the loop, the current value of `number` is printed, followed by a decrement operation `number -= 1`, which decreases the value of `number` by 1 each time the loop runs.
+- **Exit Condition:** Once `number` reaches `0`, the condition `number != 0` becomes false, causing the loop to stop.
+- **Final Output:** After the loop exits, `LIFTOFF!` is printed.
+
+This `while` loop allows for clean, concise code that iterates based on a condition, avoiding the need for more complex control constructs like `loop` combined with `if`, `else`, and `break`.
+
+#### Key Points
+
+- The `while` loop keeps running as long as the condition is true.
+- When the condition becomes false, the loop stops.
+- The `while` loop is useful when the number of iterations isn't known beforehand but is instead determined by a condition.
+
+### Looping Through a Collection with `for`
+
+n Rust, the `for` loop provides a concise and safe way to iterate over each element is a collection, such as an array. This is often more efficient and less error-prone that using a `while` loop.
+
+#### Example: Iterating Through an Array with `while`
+
+Here's an example of using a `while` loop to print each element of an array:
+
+```rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+        index += 1;
+    }
+}
+```
+
+- The code initializes an array `a` with five elements.
+- It then uses a `while` loop to iterate through each element, starting at index 0.
+- The loop condition is `index < 5`, ensuring the loop continues until all elements are printed.
+
+**Output:**
+
+```bash
+$ cargo run
+
+the value is: 10
+the value is: 20
+the value is: 30
+the value is: 40
+the value is: 50
+```
+
+While this works, it has some drawbacks. If the size of the array changes and the loop condition isn’t updated, the program could panic due to an out-of-bounds access. Additionally, this method involves an explicit index and bounds checking, which can be inefficient.
+
+#### A Safer Alternative: Using a `for` Loop
+
+Rust's `for` loop is a safer and more concise way to iterate through collections:
+
+```rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+}
+```
+
+- The `for` loop directly iterates over each element in the array `a`.
+- No need to manage an index or worry about going out of bounds.
+
+**Output**
+
+```bash
+$ cargo run
+
+the value is: 10
+the value is: 20
+the value is: 30
+the value is: 40
+the value is: 50
+```
+
+This approach is not only safer but also easier to read and maintain. If the array size changes, the `for` loop automatically handles it without modification.
+
+#### Counting Down with a `for` loop
+
+Rust's `for` loop can also be used to run code a specific number of times using a `Range`. Here's how you can count down:
+
+```rust
+fn main() {
+    for number in (1..4).rev() {
+        println!("{number}!");
+    }
+    println!("LIFTOFF!!!");
+}
+```
+
+- The `1..4` creates a range from 1 to 3 (4 is exclusive)
+- The `.rev()` method reverses the range.
+- The `for` loop iterates over each number in the reversed range, printing it.
+
+**Output**
+
+```bash
+3!
+2!
+1!
+LIFTOFF!
+```
+
+This method is mre elegant and avoids the need for manual index management, making the code cleaner and less error-prone.
+
+### Questions
+
+#### Question 1
+
+True/false: This code will terminate (it will not loop forever).
+
+```rust
+fn main() {
+    let mut x = 0;
+
+    'a: loop {
+        x += 1;
+        'b: loop {
+            if x > 10 {
+                continue 'a;
+            } else {
+                break 'b;
+            }
+        }
+        break;
+    }
+}
+```
+
+**Answer:** Tru. The code will terminate. The outer loop labeled ``a` will exit once the inner loop `'b` increments `x` to be greater that 10 and then uses `continue 'a` to skip back to the outer loop. After that, the outer loop breaks, ending the program.
+
+#### Question 2
+
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.
+
+```rust
+fn main() {
+    let a = [5; 10];
+    let mut sum = 0;
+
+    for x in a {
+        sum += x;
+    }
+    println!("{sum}");
+}
+```
+
+**Answer:** The program will pass the compiler. The expected output is:
+
+```bash
+50
+```
+
+**Explanation:** The array `a` contains ten elements, each with a value of 5. The `for` loop sums all these values, resulting in `sum` being `50`, which is then printed.
+
+### Summary
+
+You've learned about Rust's control flow mechanism, including `if` expressions, loops (`loop`, `while`, `for`), and how to iterate over collections safely and efficiently. Practicing these concepts by building small programs will help reinforce your understanding.
+
+To practice with the concepts discussed in this chapter, try building programs to do the following:
+
+- [Convert temperatures between Fahrenheit and Celsius.](https://github.com/nimodb/temp-converter)
+- [Generate the nth Fibonacci number.](https://github.com/nimodb/fibonacci-generator)
+- [Print the lyrics to the Christmas carol “The Twelve Days of Christmas,” taking advantage of the repetition in the song.](https://github.com/nimodb/twelve-days-of-christmas)
+
+When you're ready, the next chapter will introduce you to a unique concept in Rust: **Ownership**
