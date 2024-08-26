@@ -1,0 +1,6 @@
+[package]
+name = "_1_what_is_ownership"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
