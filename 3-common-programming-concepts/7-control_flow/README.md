@@ -193,7 +193,7 @@ fn main() {
 
 This loop will run until `counter` equals 5, at which point the `break` statement will exit the loop.
 
-> Recall that we did this in the guessing game in the [“Quitting After a Correct Guess”](https://github.com/nimodb/rust-journey/tree/main/_2_guessing_game) section of Chapter 2 to exit the program when the user won the game by guessing the correct number.
+> Recall that we did this in the guessing game in the [“Quitting After a Correct Guess”](https://github.com/nimodb/rust-journey/tree/main/2-guessing-game) section of Chapter 2 to exit the program when the user won the game by guessing the correct number.
 >
 > We also used `continue` in the guessing game, which in a loop tells the program to skip over any remaining code in this iteration of the loop and go to the next iteration.
 
