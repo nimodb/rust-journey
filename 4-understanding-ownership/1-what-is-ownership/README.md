@@ -179,4 +179,74 @@ By following ownership rules, Rust ensures that your programs are safe from thes
 
 ### Variables Live in the Stack
 
-_in progress_
+In Rust, variables are stored in memory frames called **stack frames**, which represent the state of a function at a particular point in its execution. Here's an example program that demonstrates how variables are allocated on the stack during function calls:
+
+```rust
+fn main() {
+    let n 5; // `L1`
+    let y = plus_one(n); // `L3`
+    println!("The Value of y is: {y}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1 // `L2`
+}
+```
+
+Now, let's break down the memory model of this program at three specific points (`L1`, `L2`, and `L3`) during its execution.
+
+- **At L1 (inside `main`):** A new stack frame for `main` is created, and the variable `n` is initialized with value `5`
+- **At L2 (inside `plus_one`):** When the function `plus_one` is called, a new stack frame for `plus_one` is created. The argument `x` is passed in with a value of `5`, copied from `n` in `main`
+- **At L3 (after `plus_one` returns):** The function `plus_one` finishes, and its stack frame is deaalocated (freed). The returned value `6` is stored in `y` in the stack frame for `main`.
+
+#### Stack Visualization
+
+To visualize the stack at each point, we can think of the program as follows:
+
+- **L1:** The stack contains a frame for `main` with the variable `n = 5`.
+- **L2:** The stack contains a frame for `main` (`n = 5`) and a frame for `plus_one` (`x = 5`).
+- **L3:** The `plus_one` frame is removed, leaving `main` with `n = 5` and `y = 6`.
+
+```mermaid
+graph TD
+    L1["Stack L1"]
+    L1 --> |"main"| A[n=5]
+
+    L2["Stack L2"]
+    L2 --> |"main"| B[n=5]
+    L2 --> |"plus_one"| C[x=5]
+
+    L3["Stack L3"]
+    L3 --> |"main"| D[n=5]
+    L3 --> |"main"| E[y=6]
+```
+
+#### Frames and Stacks
+
+In Rust, Variables live in **frames**, and a frame corresponds to a scope, like a function. These frames are organized into a **stack** because each function call adds a new frame to the stack. Once a function finishes, its frame is deallocated (or dropped), and the program returns to the previous frame.
+
+For example:
+
+- At `L1`, `main` has a frame holding `n = 5`.
+- At `L2`, `main` holds `n = 5`, and the called function `plus_one` holds `x = 5`.
+- At `L3`, `plus_one` is done, and `main` now holds `n = 5` and `y = 6`.
+
+This sequence of stacking frames follow a **Last In, First Out** (LIFO) principle, where the last function added to the stack is the first one removed.
+
+#### Copying Variables
+
+When you copy a variable, the value is duplicated into the new variable, and the original remains unchanged. Consider this example:
+
+```rust
+let a = 5; // `L1`
+let mut b = a; // `L2`
+b += 1; // `L3`
+```
+
+- **At L1:** `a` is set to 5.
+- **At L2:** The value of `a` is copied into `b`, so `b = 5` and `a = 5`.
+- **At L3:** `b` is incremented, so now `b = 6` while `a` remains 5.
+
+In Rust, variable like `a` and `b` are **copied** rather than shared by reference when stored in the stack.
+
+This ensures the integrity of variable without the risk of modifying a variable unintentionally through another reference.
