@@ -250,3 +250,98 @@ b += 1; // `L3`
 In Rust, variable like `a` and `b` are **copied** rather than shared by reference when stored in the stack.
 
 This ensures the integrity of variable without the risk of modifying a variable unintentionally through another reference.
+
+### Boxes Live in the Heap
+
+In Rust, while stack memory is used for small, fixed-size data, heap memory os used for larger or dynamically-size data. Here's an example to illustrate how data is managed between the stack and the heap:
+
+```rust
+let a = [0; 1_000_000]; // `L1`
+let b = a; // `L2`
+```
+
+In the example above, an array `a` with 1 million elements is created. When `a` is assigned to `b`, Rust copies the entire array. This can be inefficient due to the large size of the array.
+
+Let's visualize the stack and heap at different point:
+
+- **At L1:** The stack frame contains the variable `a` with 1 million elements.
+
+```mermaid
+graph TD
+    L1["Stack L1"]
+    L1 --> |"main"| A[a: 0, 0, 0, ..., 0]
+```
+
+- At L2: After assigning `a` to `b`, both `a` and `b` occupy the stack with 1 million elements each, leading to a total of 2 million elements on the stack.
+
+```mermaid
+graph TD
+    L2["Stack L2"]
+    L2 --> |"main"| B[a: 0, 0, 0, ..., 0]
+    L2 --> |"main"| C[b: 0, 0, 0, ..., 0]
+```
+
+#### Using Box to Avoid Copying
+
+To avoid copying large amounts of data, Rust uses pointers. A common way to handle large data is by using the heap. You can use the `Box` type to allocate data on the heap. Here's an example:
+
+```rust
+let a = Box::new([0: 1_000_000]); // `L1`
+let b = a; // L2
+```
+
+- **At L1:** `a` is a `Box` that holds a pointer to an array of 1 million elements allocated on the heap.
+
+```mermaid
+graph TD
+    L1["Stack L1"]
+    L1 --> |"main"| A[a] --> |"Heap"| B[0, 0, 0, ..., 0]
+```
+
+- **At L2:** `b` now points to the same heap allocation as `a`. The pointer is copied, but the data on the heap remains unchanged. `a` is moved and no longer accessible.
+
+```mermaid
+graph TD
+    L2["Stack L2"]
+    L2 --> |"main"| C[a]
+    L2 --> |"main"| D[b] --> |"Heap"| E[0, 0, 0, ..., 0]
+```
+
+#### Question:
+
+1. **Which of the following best describes the difference between the stack and the heap?**
+
+   - [ ] The stack holds immutable data, while the heap holds mutable data.
+   - [x] **The stack holds data associated with a specific function, while the heap holds data that can outlive a function.**
+   - [ ] The stack can hold pointers to data stored on the heap, while the heap only holds data without pointers.
+   - [ ] The stack holds copyable data, while the heap holds uncopyable data.
+
+   **Context:** Frames in the stack are tied to a specific function and are deallocated when the function returns. Data on the heap can persist beyond the lifetime of a single function. Both stack and heap data can be mutable and copyable. The heap can contain pointers, including to stack data.
+
+2. **Consider the execution of the following snippet, with the final state shown:**
+
+   ```rust
+   let a = Box::new(15);
+   let b = a;
+   let c = Box::new(15); // L1
+   ```
+
+   ```mermaid
+   graph TD
+       L1["Stack L1"]
+       L1 --> |"main"| A[a]
+       L1 --> |"main"| B[b] --> |"Heap"| D[15]
+       L1 --> |"main"| C[c] --> |"Heap"| E[15]
+   ```
+
+   **In the final state, how many copies of the number 15 live anywhere in memory?**
+
+   **The correct answer:**
+
+   - **2**
+
+   **Context:** The two `Box` allocations each contain a separate copy of the number 15 on the heap. The `let b = a` assignment transfers ownership of the heap-allocated data from `a` to `b`, but `a` is no longer valid after the move. Thus, there are two copies of the number 15 on the heap, one for each `Box`.
+
+### Rust Does Not Permit Manual Memory Management
+
+_in progress_
