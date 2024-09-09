@@ -344,4 +344,44 @@ graph TD
 
 ### Rust Does Not Permit Manual Memory Management
 
-_in progress_
+Memory management involves the allocation and deallocated of memory, ensuring that memory is efficiently used and freed when no longer needed. In Rust, stack memory management is automatic. when a function is called, Rust allocates a stack frame, and when the function returns, the stack frame is automatically deallocated.
+
+For heap memory, which is allocated via constructs like `Box::new()`, Rust ensures that memory is properly managed without manual intervention. Let's explore why Rust avoids manual memory deallocated by considering the following hypothetical example:
+
+```rust
+let b = Box::new([0; 100]); // L1
+free(b); // L2
+assert!(b[0] == 0); // L3
+```
+
+In this example:
+
+- **At L1:** We allocate an array on the heap with `Box::new([0; 100])`. This allocates 100 elements on the heap and returns a pointer to that heap data stored in `b`.
+- **At L2:** If Rust allowed manual memory management and we had a `free()` function, calling `free(b)` would deallocate the memory on the heap that `b` points to. the pointer `b` would now be invalid, pointing to freed memory.
+- **At L3:** We attempt to read from `b` after the memory has been deallocated, accessing `b[0]`. This leads to undefined behavior, as the pointer is no longer valid. The program cold crash, return incorrect data, or exhibit other unsafe behavior.
+
+#### The Danger of Manuel Memory Management
+
+Allowing manuel deallocation leads to potential bugs, such as:
+
+- **Use-after-free:** Accessing memory that has already been freed can cause crashes or unpredictable behavior.
+- **Double-free:** Attempting to free memory that has already been deallocated can lead to program crashes or corruption.
+
+Rust avoids these issues by not allowing explicit calls to `free()`. Instead, memory management is handled through Rust's ownership system and its powerful **borrow checker**, which ensures that memory is freed only when it is no longer in use.
+
+#### Simulation for Educational Purposes
+
+The example above shown a program that would normally not compile in Rust. To demonstrate the consequences of manual memory management, we simulate Rust as if the borrow check were disable. Tools like [aquascope](https://github.com/cognitive-engineering-lab/aquascope) allow us to answer "what if" questions, such as what would happen if Rust permitted unsafe code like this to compile.
+
+#### Why Rust Forbids Manual Deallocation
+
+Rust's memory management system ensures safety by:
+
+- **Preventing manual deallocation:** Rust automatically frees heap memory when the variable that owns the memory goes out of scope. This is known as **ownership**.
+- **Preventing dangling pointers:** The borrow checker ensures that pointers to memory are only valid while the memory is still allocated.
+
+By forbidding manual memory management, Rust eliminates entire classes of memory-related bugs, making programs safer and more predicable. This is one of the key reasons why Rust is a systems programming language that guarantees memory safety without needing a garbage collector.
+
+### A Box’s Owner Manages Deallocation
+
+*in Process*
