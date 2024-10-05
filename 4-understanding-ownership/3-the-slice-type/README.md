@@ -1,4 +1,4 @@
-# The Slice Type
+# 4.3 The Slice Type
 
 _Slice_ lets you reference a Contiguous sequence of elements in a collection rather than the whole collection. A slice is a kind of reference, so it is a non-owning pointer.
 
